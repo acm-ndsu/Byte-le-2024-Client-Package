@@ -5,6 +5,8 @@ from game.common.stations.occupiable_station import OccupiableStation
 from game.quarry_rush.avatar.inventory_manager import InventoryManager
 from game.quarry_rush.entity.ancient_tech import AncientTech
 from game.quarry_rush.entity.ores import Lambdium, Turite, Copium
+from game.quarry_rush.entity.placeable.dynamite import Dynamite
+from game.quarry_rush.entity.placeable.traps import Landmine, EMP
 from game.utils.vector import Vector
 from game.common.map.tile import Tile
 from game.common.avatar import Avatar
@@ -12,9 +14,7 @@ from typing import Self
 
 
 class OreOccupiableStation(OccupiableStation):
-    """
-    Station that holds the different types of ores; inherits from OccupiableStation.
-    """
+
 
     def __init__(self, position: Vector = Vector(0, 0), seed: float = 0, special_weight: float = .2,
                  ancient_tech_weight: float = .1):
@@ -35,3 +35,11 @@ class OreOccupiableStation(OccupiableStation):
     
     def take_action(self, avatar: Avatar, inventory_manager: InventoryManager):
         ...
+
+    def to_json(self) -> dict:
+        ...
+
+    def from_json(self, data: dict) -> Self:
+        ...
+
+    

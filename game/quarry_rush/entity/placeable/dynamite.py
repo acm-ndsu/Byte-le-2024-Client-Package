@@ -1,19 +1,17 @@
 from game.utils.vector import Vector
 from game.common.stations.occupiable_station import OccupiableStation
 from game.common.enums import *
+from game.config import DYNAMITE_FUSE
 from typing import Self
 
 
 class Dynamite(OccupiableStation):
-    """
-    Dynamite is a class that represents the dynamite an Avatar can place on the ground. It inherits from Occupiable
-    Station to permit Avatar instances to walk on them.
-    """
+
     def __init__(self, position: Vector | None = None, blast_radius: int = 0, company: Company = Company.CHURCH):
         super().__init__()
         self.position: Vector | None = position
         self.blast_radius: int = blast_radius
-        self.fuse: int = 3  # how many turns it'll take before the dynamite explodes
+        self.fuse: int = DYNAMITE_FUSE  # how many turns it'll take before the dynamite explodes
         self.object_type: ObjectType = ObjectType.DYNAMITE
         self.company: Company = company
 
@@ -52,7 +50,7 @@ class Dynamite(OccupiableStation):
     # can_explode setter
     @can_explode.setter
     def can_explode(self, can_explode: bool) -> None:
-        if can_explode is None or not isinstance(can_explode, int):
+        if can_explode is None or not isinstance(can_explode, bool):
             raise ValueError(f'{self.__class__.__name__}.can_explode must be a bool.')
         self.__can_explode = can_explode
 
@@ -77,4 +75,12 @@ class Dynamite(OccupiableStation):
 
     # detonate method
     def detonate(self):
+        ...
+
+    # to json
+    def to_json(self) -> dict:
+        ...
+
+    # from json
+    def from_json(self, data: dict) -> Self:
         ...

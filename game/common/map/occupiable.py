@@ -8,16 +8,6 @@ from typing import Self, Type
 
 
 class Occupiable(GameObject):
-    """
-    `Occupiable Class Notes:`
-
-        Occupiable objects exist to encapsulate all objects that could be placed on the gameboard.
-
-        These objects can only be occupied by GameObjects, so inheritance is important. The ``None`` value is
-        acceptable for this too, showing that nothing is occupying the object.
-
-        Note: The class Item inherits from GameObject, but it is not allowed to be on an Occupiable object.
-    """
 
     def __init__(self, occupied_by: GameObject = None, **kwargs):
         super().__init__()
@@ -52,4 +42,10 @@ class Occupiable(GameObject):
         ...
 
     def remove_game_object_from_occupied_by(self, game_object: GameObject | None = None) -> GameObject | None:
+        ...
+
+    def to_json(self) -> dict:
+        ...
+
+    def from_json(self, data: dict) -> Self:
         ...

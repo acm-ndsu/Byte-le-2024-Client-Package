@@ -13,133 +13,6 @@ from game.quarry_rush.ability.dynamite_active_ability import DynamiteActiveAbili
 
 
 class Avatar(GameObject):
-    """
-    `Avatar Inventory Notes:`
-
-        The avatar's inventory is a list of items. Each item has a quantity and a stack_size (the max amount of an
-        item that can be held in a stack. Think of the Minecraft inventory).
-
-        This upcoming example is just to facilitate understanding the concept. The Dispensing Station concept that will
-        be mentioned is completely optional to implement if you desire. The Dispensing Station is used to help with the
-        explanation.
-
-        ----
-
-        **Items:**
-            Every Item has a quantity and a stack_size. The quantity is how much of the Item the player *currently* has.
-            The stack_size is the max of that Item that can be in a stack. For example, if the quantity is 5, and the
-            stack_size is 5 (5/5), the item cannot be added to that stack
-
-        -----
-
-        **Picking up items:**
-
-            Example 1:
-                When you pick up an item (which will now be referred to as picked_up_item), picked_up_item has a given
-                quantity. In this case, let's say the quantity of picked_up_item is 2.
-
-                Imagine you already have this item in your inventory (which will now be referred to as inventory_item),
-                and inventory_item has a quantity of 1 and a stack_size of 10 (think of this as a fraction: 1/10).
-
-                When you pick up picked_up_item, inventory_item will be checked.
-                If picked_up_item's quantity + inventory_item < stack_size, it'll be added without issue.
-                Remember, for this example: picked_up_item quantity is 2, and inventory_item quantity is 1, and
-                stack_size is 10.
-
-                    Inventory_item quantity before picking up: 1/10
-                    ::
-                        2 + 1 < 10 --> True
-                    Inventory_item quantity after picking up: 3/10
-
-            ----
-
-            Example 2:
-                For the next two examples, the total inventory size will be considered.
-
-                Let's say inventory_item has quantity 4 and a stack_size of 5. Now say that picked_up_item has
-                quantity 3.
-
-                Recall: if picked_up_item's quantity + inventory_item < stack_size, it will be added without issue
-
-                    Inventory_item quantity before picking up: 4/5
-                    ::
-                        3 + 4 < 5 --> False
-
-                What do we do in this situation? If you want to add picked_up_item to inventory_item and there is an
-                overflow of quantity, that is handled for you.
-
-                Let's say that your inventory size (which will now be referred to as max_inventory_size) is 5. You
-                already have inventory_item in there that has a quantity of 4 and a stack_size of 5. An image of the
-                inventory is below. 'None' is used to help show the max_inventory_size. Inventory_item quantity and
-                stack_size will be listed in parentheses as a fraction.
-                ::
-                    Inventory:
-                    [
-                        inventory_item (4/5),
-                        None,
-                        None,
-                        None,
-                        None
-                    ]
-
-                Now we will add picked_up_item and its quantity of 3:
-                ::
-                    Inventory before:
-                    [
-                        inventory_item (4/5),
-                        None,
-                        None,
-                        None,
-                        None
-                    ]
-
-                    3 + 4 < 5 --> False
-
-                inventory_item (4/5) will now be inventory_item (5/5)
-                picked_up_item now has a quantity of 2 instead of 3
-                Since we have a surplus, we will append the same item with a quantity of 2 in the inventory.
-                ::
-                    The result is:
-                    [
-                        inventory_item (5/5),
-                        inventory_item (2/5),
-                        None,
-                        None,
-                        None
-                    ]
-
-            ----
-
-            Example 3:
-
-                You can only fit one more inventory_item into the last stack before the inventory is full.
-                Let's say that picked_up_item has quantity of 3 again.
-                ::
-                    Inventory before:
-                    [
-                        inventory_item (5/5),
-                        inventory_item (5/5),
-                        inventory_item (5/5),
-                        inventory_item (5/5),
-                        inventory_item (4/5)
-                    ]
-
-                        3 + 4 < 5 --> False
-
-                inventory_item (4/5) will now be inventory_item (5/5)
-                picked_up_item now has a quantity of 2
-                However, despite the surplus, we cannot add it into our inventory, so the remaining quantity of
-                picked_up_item is left where it was first found.
-                ::
-                    Inventory after:
-                    [
-                        inventory_item (5/5),
-                        inventory_item (5/5),
-                        inventory_item (5/5),
-                        inventory_item (5/5),
-                        inventory_item (5/5)
-                    ]
-    """
 
     def __init__(self, company: Company = Company.CHURCH, position: Vector | None = None):
         super().__init__()
@@ -246,7 +119,45 @@ class Avatar(GameObject):
 
         self.__abilities = abilities
 
-    def is_researched(self, tech_name: str | Tech) -> bool:
+    # Tech Tree methods and implementation------------------------------------------------------------------------------
+
+    # Helper method to create the tech tree
+    def __create_tech_tree(self) -> TechTree:
+        ...
+
+    def __increase_movement(self, amt: int) -> None:
+        ...
+
+    def __increase_drop_rate(self, amt: int) -> None:
+        ...
+
+    def __unlock_overdrive_movement(self) -> None:
+        ...
+
+    def __unlock_overdrive_mining(self) -> None:
+        ...
+
+    def __unlock_dynamite(self) -> None:
+        ...
+
+    def __unlock_landmines(self) -> None:
+        ...
+
+    def __unlock_emps(self) -> None:
+        ...
+
+    def __unlock_trap_defusal(self) -> None:
+        ...
+
+    # Helper method to create a dictionary that stores bool values for which abilities the player unlocked
+    def __create_abilities_dict(self) -> dict:
+        ...
+
+    def buy_new_tech(self, tech_name: str) -> bool:
+
+        ...
+
+    def is_researched(self, tech_name: Tech | str) -> bool:
         ...
 
     def get_researched_techs(self) -> list[str]:
@@ -274,4 +185,14 @@ class Avatar(GameObject):
 
     # method to return the opposing team based on the avatar's company
     def get_opposing_team(self) -> Company:
+        ...
+
+    # method to return your company
+    def get_company(self) -> Company:
+        ...
+
+    def to_json(self) -> dict:
+        ...
+
+    def from_json(self, data: dict) -> Self:
         ...

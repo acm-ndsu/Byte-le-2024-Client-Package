@@ -6,63 +6,6 @@ from typing import Self, Tuple
 
 
 class Vector(GameObject):
-    """
-    `Vector Class Notes:`
-
-    This class is used universally in the project to handle anything related to coordinates. There are a few useful
-    methods here to help in a few situations.
-
-    -----
-
-    Add Vectors Method:
-        This method will take two Vector objects, combine their (x, y) coordinates, and return a new Vector object.
-
-        Example:
-            vector_1: (1, 1)
-            vector_2: (1, 1)
-
-            Result:
-            vector_result: (2, 2)
-
-    -----
-
-    Add to Vector method:
-        This method will take a different Vector object and add it to the current Self reference; that is, this method
-        belongs to a Vector object and is not static.
-
-        Example:
-            self_vector: (0, 0)
-            vector_1: (1, 3)
-
-            Result:
-            self_vector: (1, 3)
-
-    -----
-
-    Add X and Add Y methods:
-        These methods act similarly to the ``add_vector()`` method, but instead of changing both the x and y, these
-        methods change their respective variables.
-
-        Add X Example:
-            self_vector: (0, 0)
-            vector_1: (1, 3)
-
-            Result:
-            self_vector: (1, 0)
-
-        Add Y Example:
-            self_vector: (0, 0)
-            vector_1: (1, 3)
-
-            Result:
-            self_vector: (0, 3)
-
-    -----
-
-    As Tuple Method:
-        This method returns a tuple of the Vector object in the form of (x, y). This is to help with storing it easily
-        or accessing it in an immutable structure.
-    """
 
     def __init__(self, x: int = 0, y: int = 0):
         super().__init__()
@@ -93,7 +36,7 @@ class Vector(GameObject):
     @staticmethod
     def add_vectors(vector_1: 'Vector', vector_2: 'Vector') -> 'Vector':
         ...
-    
+
     @staticmethod
     def from_xy_tuple(xy_tuple: Tuple[int, int]) -> 'Vector':
         ...
@@ -117,10 +60,14 @@ class Vector(GameObject):
     def as_tuple(self) -> Tuple[int, int]:
         ...
 
-    def __str__(self) -> str:
+    def to_json(self) -> dict:
         ...
 
-    # Stuff added for Byte-le 2024
+    def from_json(self, data) -> Self:
+        ...
+
+    def __str__(self) -> str:
+        ...
     
     def length(self) -> int:
         ...

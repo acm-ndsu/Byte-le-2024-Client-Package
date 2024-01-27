@@ -6,16 +6,6 @@ from game.client.user_client import UserClient
 
 
 class Player(GameObject):
-    """
-    `Player Class Notes:`
-
-    -----
-
-        The Player class is what represents the team that's competing. The player can contain a list of Actions to
-        execute each turn. The avatar is what's used to execute actions (e.g., interacting with stations, picking up
-        items, etc.). For more details on the difference between the Player and Avatar classes, refer to the README
-        document.
-    """
     def __init__(self, code: object | None = None, team_name: str | None = None, actions: list[ActionType] = [],
                  avatar: Avatar | None = None):
         super().__init__()
@@ -104,12 +94,12 @@ class Player(GameObject):
             raise ValueError(f'{self.__class__.__name__}.object_type must be ObjectType')
         self.__object_type = object_type
 
+    def to_json(self):
+        ...
+
+    def from_json(self, data):
+        ...
+
 # to String
     def __str__(self):
-        p = f"""ID: {self.id}
-            Team name: {self.team_name}
-            Actions: 
-            """
-        # This concatenates every action from the list of actions to the string 
-        [p:= p + action for action in self.actions]
-        return p
+        ...

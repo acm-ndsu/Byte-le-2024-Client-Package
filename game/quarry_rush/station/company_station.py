@@ -5,17 +5,11 @@ from game.quarry_rush.avatar.inventory_manager import InventoryManager
 from game.common.enums import ObjectType
 from typing import Self
 
+from game.quarry_rush.entity.placeable.dynamite import Dynamite
+from game.quarry_rush.entity.placeable.traps import Landmine, EMP
+
 
 class CompanyStation(OccupiableStation):
-    """
-    CompanyStation is a station inheriting from OccupiableStation
-
-    This station contains a company which correlates to the avatar's company.
-    These stations are auto-generated in game_location.py
-
-    take_action: if the avatar's company matches the company of the station, the avatar can
-    run cash_in_all
-    """
 
     def __init__(self, company: Company):
         super().__init__()
@@ -36,20 +30,22 @@ class CompanyStation(OccupiableStation):
     def take_action(self, avatar: Avatar, inventory_manager: InventoryManager) -> None:
         ...
 
+    def to_json(self) -> dict:
+        ...
+
+    def from_json(self, data: dict) -> Self:
+        ...
+
 
 class ChurchStation(CompanyStation):
-    """
-    Class to generate base stations for Church.
-    """
+
     def __init__(self):
         super().__init__(Company.CHURCH)
         self.object_type = ObjectType.CHURCH_STATION
 
 
 class TuringStation(CompanyStation):
-    """
-    Class to generate base stations for Turing.
-    """
+
     def __init__(self):
         super().__init__(Company.TURING)
         self.object_type = ObjectType.TURING_STATION

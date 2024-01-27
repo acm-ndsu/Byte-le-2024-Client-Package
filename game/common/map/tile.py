@@ -7,22 +7,16 @@ from game.common.map.occupiable import Occupiable
 from game.common.map.wall import Wall
 from game.common.stations.station import Station
 from game.common.stations.occupiable_station import OccupiableStation
+from game.quarry_rush.entity.placeable.dynamite import Dynamite
+from game.quarry_rush.entity.placeable.traps import EMP, Landmine
 from game.quarry_rush.station.company_station import ChurchStation, TuringStation
 
 
 class Tile(Occupiable):
-    """
-    `Tile Class Notes:`
-
-        The Tile class exists to encapsulate all objects that could be placed on the gameboard.
-
-        Tiles will represent things like the floor in the game. They inherit from Occupiable, which allows for tiles to
-        have certain GameObjects and the avatar on it.
-
-        If the game being developed requires different tiles with special properties, future classes may be added and
-        inherit from this class.
-    """
 
     def __init__(self, occupied_by: GameObject = None):
         super().__init__(occupied_by)
         self.object_type: ObjectType = ObjectType.TILE
+
+    def from_json(self, data: dict) -> Self:
+        ...

@@ -19,106 +19,57 @@ from game.quarry_rush.station.company_station import TuringStation, ChurchStatio
 from game.quarry_rush.entity.placeable.traps import EMP, Landmine
 
 
+class TrapQueue(GameObject):
+    def __init__(self):
+        super().__init__()
+        self.__traps: list[Trap | None] = []
+        self.__max_traps = 10
+
+    def add_trap(self, trap: Trap, remove_trap_at: Callable[[Vector], None]):
+        ...
+
+    def detonate(self, inventory_manager: InventoryManager, remove_trap_at: Callable[[Vector], None], avatar: Avatar) -> None:
+        ...
+
+    def dequeue_trap_at(self, position: Vector):
+        ...
+
+    def size(self) -> int:
+        ...
+
+    def to_json(self):
+        ...
+
+    def from_json(self, data: dict) -> Self:
+        ...
+
+
+class DynamiteList(GameObject):
+
+    def __init__(self):
+        super().__init__()
+        self.__dynamite_list: list[Dynamite] = []
+
+    def add_dynamite(self, dynamite: Dynamite):
+        ...
+
+    def detonate(self):
+        ...
+
+    def size(self) -> int:
+        ...
+
+    def get_from_list(self, index: int) -> Dynamite:
+        ...
+
+    def to_json(self) -> dict:
+        ...
+
+    def from_json(self, data: dict) -> Self:
+        ...
+
+
 class GameBoard(GameObject):
-    """
-    `GameBoard Class Notes:`
-
-    Map Size:
-    ---------
-        map_size is a Vector object, allowing you to specify the size of the (x, y) plane of the game board.
-        For example, a Vector object with an 'x' of 5 and a 'y' of 7 will create a board 5 tiles wide and
-        7 tiles long.
-
-        Example:
-        ::
-            _ _ _ _ _  y = 0
-            |       |
-            |       |
-            |       |
-            |       |
-            |       |
-            |       |
-            _ _ _ _ _  y = 6
-
-    -----
-
-    Locations:
-    ----------
-        This is the bulkiest part of the generation.
-
-        The locations field is a dictionary with a key of a tuple of Vectors, and the value being a list of
-        GameObjects (the key **must** be a tuple instead of a list because Python requires dictionary keys to be
-        immutable).
-
-        This is used to assign the given GameObjects the given coordinates via the Vectors. This is done in two ways:
-
-        Statically:
-            If you want a GameObject to be at a specific coordinate, ensure that the key-value pair is
-            *ONE* Vector and *ONE* GameObject.
-            An example of this would be the following:
-            ::
-                locations = { (vector_2_4) : [station_0] }
-
-            In this example, vector_2_4 contains the coordinates (2, 4). (Note that this naming convention
-            isn't necessary, but was used to help with the concept). Furthermore, station_0 is the
-            GameObject that will be at coordinates (2, 4).
-
-        Dynamically:
-            If you want to assign multiple GameObjects to different coordinates, use a key-value
-            pair of any length.
-
-            **NOTE**: The length of the tuple and list *MUST* be equal, otherwise it will not
-            work. In this case, the assignments will be random. An example of this would be the following:
-            ::
-                locations =
-                {
-                    (vector_0_0, vector_1_1, vector_2_2) : [station_0, station_1, station_2]
-                }
-
-            (Note that the tuple and list both have a length of 3).
-
-            When this is passed in, the three different vectors containing coordinates (0, 0), (1, 1), or
-            (2, 2) will be randomly assigned station_0, station_1, or station_2.
-
-            If station_0 is randomly assigned at (1, 1), station_1 could be at (2, 2), then station_2 will be at (0, 0).
-            This is just one case of what could happen.
-
-        Lastly, another example will be shown to explain that you can combine both static and
-        dynamic assignments in the same dictionary:
-        ::
-            locations =
-                {
-                    (vector_0_0) : [station_0],
-                    (vector_0_1) : [station_1],
-                    (vector_1_1, vector_1_2, vector_1_3) : [station_2, station_3, station_4]
-                }
-
-        In this example, station_0 will be at vector_0_0 without interference. The same applies to
-        station_1 and vector_0_1. However, for vector_1_1, vector_1_2, and vector_1_3, they will randomly
-        be assigned station_2, station_3, and station_4.
-
-    -----
-
-    Walled:
-    -------
-        This is simply a bool value that will create a wall barrier on the boundary of the game_board. If
-        walled is True, the wall will be created for you.
-
-        For example, let the dimensions of the map be (5, 7). There will be wall Objects horizontally across
-        x = 0 and x = 4. There will also be wall Objects vertically at y = 0 and y = 6
-
-        Below is a visual example of this, with 'x' being where the wall Objects are.
-
-        Example:
-        ::
-            x x x x x   y = 0
-            x       x
-            x       x
-            x       x
-            x       x
-            x       x
-            x x x x x   y = 6
-    """
 
     def __init__(self, seed: int | None = None, map_size: Vector = Vector(),
                  locations: dict[tuple[Vector]:list[GameObject]] | None = None, walled: bool = False):
@@ -135,6 +86,9 @@ class GameBoard(GameObject):
         self.locations: dict | None = locations
         self.walled: bool = walled
         self.inventory_manager: InventoryManager = InventoryManager()
+        self.church_trap_queue = TrapQueue()
+        self.turing_trap_queue = TrapQueue()
+        self.dynamite_list: DynamiteList = DynamiteList()
 
     @property
     def seed(self) -> int:
@@ -205,10 +159,59 @@ class GameBoard(GameObject):
 
         self.__walled = walled
 
+    def generate_map(self) -> None:
+        ...
+
+    def __populate_map(self) -> None:
+        ...
+
+    def __occupied_filter(self, game_object_list: list[GameObject]) -> list[GameObject]:
+        """
+        A helper method that returns a list of game objects that have the 'occupied_by' attribute.
+        :param game_object_list:
+        :return: a list of game object
+        """
+        ...
+
+    def __help_populate(self, vector_list: list[Vector], game_object_list: list[GameObject]) -> None:
+        """
+        A helper method that helps populate the game map.
+        :param vector_list:
+        :param game_object_list:
+        :return: None
+        """
+
+        ...
+
 # Returns the Vector and a list of GameObject for whatever objects you are trying to get
     def get_objects(self, look_for: ObjectType) -> list[tuple[Vector, list[GameObject]]]:
-       ...
+        ...
 
+# Add the objects to the end of to_return (a list of GameObject)
+    def __get_objects_help(self, look_for: ObjectType, temp: GameObject | Tile, to_return: list[GameObject]):
+        ...
+
+    def to_json(self) -> dict:
+        ...
 
     def generate_event(self, start: int, end: int) -> None:
+        ...
+
+    def __from_json_helper(self, data: dict) -> GameObject:
+        ...
+
+    def from_json(self, data: dict) -> Self:
+        ...
+
+    # removes trap from game_map based on position, method called in trap queue detonate method
+    def remove_trap_at(self, position: Vector) -> None:
+        ...
+
+    def trap_detonation_control(self, avatars: dict[Company, Avatar]) -> None:
+        ...
+
+    def dynamite_detonation_control(self):
+        ...
+        
+    def defuse_trap_at(self, position: Vector) -> None:
         ...

@@ -9,10 +9,6 @@ from typing import Self
 
 
 class InventoryManager(GameObject):
-    """
-    This class is used to manage Avatar inventories instead of the avatar instances doing so. This will only be
-    created once in the project's lifespan, but is not enforced to be a singleton object.
-    """
 
     __inventory_size: int = 50
 
@@ -43,6 +39,9 @@ class InventoryManager(GameObject):
         ...
 
     def steal(self, to_company: Company, from_company: Company, steal_rate: float) -> None:
+        ...
+
+    def get_inventory(self, company: Company) -> list[Item | None]:
         ...
 
     def is_empty(self, company: Company) -> bool:
